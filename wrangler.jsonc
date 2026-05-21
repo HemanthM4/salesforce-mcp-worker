@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "salesforce-mcp-worker",
+  "main": "src/index.js",
+  "compatibility_date": "2026-05-21",
+
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+
+  "observability": {
+    "enabled": true
+  },
+
+  "upload_source_maps": true,
+
+  "vars": {
+    "SALESFORCE_LOGIN_URL": "https://login.salesforce.com",
+    "SALESFORCE_API_VERSION": "60.0",
+    "MCP_ACCESS_MODE": "read_only",
+    "SALESFORCE_DEFAULT_RECORD_LIMIT": "5",
+    "SALESFORCE_MAX_RECORD_LIMIT": "10",
+    "SALESFORCE_MAX_QUERY_LENGTH": "4000",
+    "SALESFORCE_MAX_SELECTED_FIELDS": "50",
+    "SALESFORCE_ALLOW_QUERY_MORE": "false",
+    "SALESFORCE_TOKEN_TIMEOUT_MS": "8000",
+    "SALESFORCE_QUERY_TIMEOUT_MS": "10000",
+    "ROUTE_TIMEOUT_MS": "15000",
+    "MCP_TOOL_TIMEOUT_MS": "12000",
+    "AUDIT_ENABLED": "true",
+    "AUDIT_SINK": "console",
+    "AUDIT_LOG_SUCCESS": "true",
+    "AUDIT_LOG_FAILURE": "true",
+    "AUDIT_INCLUDE_QUERY_PREVIEW": "true",
+    "AUDIT_QUERY_PREVIEW_MAX_CHARS": "300",
+    "AUDIT_INCLUDE_RECORD_COUNTS": "true"
+  }
+}
