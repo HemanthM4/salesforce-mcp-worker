@@ -141,11 +141,42 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === "/") {
+      const missing = [];
+      if (!env.SALESFORCE_CLIENT_ID) missing.push("SALESFORCE_CLIENT_ID");
+      if (!env.SALESFORCE_USERNAME) missing.push("SALESFORCE_USERNAME");
+      if (!env.SALESFORCE_PRIVATE_KEY_DER_B64) missing.push("SALESFORCE_PRIVATE_KEY_DER_B64");
+
+      return Response.json({
+        service: "salesforce-mcp-worker",
+        status: missing.length === 0 ? "ready" : "missing credentials",
+        missingCredentials: missing,
+        routes: [
+          "GET /health",
+          "GET /debug/env",
+          "GET /debug/salesforce-login",
+          "GET /debug/salesforce-userinfo",
+          "GET /debug/tools",
+          "GET /debug/tool-call?tool=salesforce_find_context&args={\"userRequest\":\"SA-792977\"}",
+          "GET /debug/limited-query?q=SELECT+Id+FROM+ServiceAppointment+LIMIT+5",
+          "GET /debug/query-limits",
+          "GET /debug/timeouts"
+        ]
+      });
+    }
+
     if (url.pathname === "/health") {
       return Response.json({
         ok: true,
         service: "salesforce-mcp-worker",
         mode: env.MCP_ACCESS_MODE || "unknown"
+      });
+    }
+
+    if (url.pathname === "/.well-known/appspecific/com.chrome.devtools.json") {
+      return new Response(JSON.stringify({}), {
+        headers: { "Content-Type": "application/json" },
+        status: 200
       });
     }
 
